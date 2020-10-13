@@ -44,8 +44,7 @@
         </template>
 
         <template v-if="setLocale === 'Файл'">
-          <v-container fluid class="file_load">
-
+          <v-container fluid class="file_load" v-model="file">
             <v-row no-gutters>
               <v-col>
                 <div class="file_input_title_list">
@@ -113,7 +112,8 @@
           color="primary"
           class="text-capitalize"
           :disabled = "$v.code.$invalid && $v.link.$invalid"
-      >
+          @click="sendData"
+       >
         Сохранить
       </v-btn>
 
@@ -137,13 +137,13 @@ export default {
         id: 0,
         value: 'Ссылка',
         icon: 'mdi-link',
-        text: 'Вставить ссылку'
+        text: 'Вставить ссылку',
+
       },
       {
         id: 1,
         value: 'Файл',
-        icon: ' mdi-file-document-outline'
-        ,
+        icon: ' mdi-file-document-outline',
         text: 'Загрузите файл'
       },
       {
@@ -167,6 +167,37 @@ export default {
       minLength: minLength(10),
       maxLayers: maxLength(2000)
     },
+  },
+  methods: {
+    sendData:  function () {
+      console.log(this.setLocale);
+      let data = ''
+      switch (this.setLocale){
+        case "iFrame":{
+          data = {
+            type: 'iFrame',
+            data: this.code
+          }
+          break;
+        }
+        case "Ссылка":{
+          data = {
+            type: 'link',
+            data: this.link
+          }
+          break;
+        }
+        case "Файл":{
+          data = {
+            type: 'file',
+            data: this.file
+          }
+          break;
+        }
+      }
+      console.log(data)
+
+    }
   }
 
 
